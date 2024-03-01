@@ -1,0 +1,45 @@
+{
+  "name": "rolling-search",
+  "version": "1.0.0",
+  "description": "filter the array of string/json objects using Rabin Karp algorithm",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "type": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/himanshu3889/react-search-filter.git"
+  },
+  "keywords": [
+    "text",
+    "string",
+    "substring",
+    "search",
+    "filter",
+    "match",
+    "pattern",
+    "find",
+    "engine",
+    "algorithm",
+    "processing",
+    "search-engine",
+    "string-matching",
+    "hash",
+    "hashing",
+    "rolling hash",
+    "rabin-karp"
+  ],
+  "author": "Himanshu Rajput",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/himanshu3889/react-search-filter/issues"
+  },
+  "homepage": "https://github.com/himanshu3889/react-search-filter#readme",
+  "devDependencies": {
+    "@types/node": "^20.11.20",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3"
+  }
+}
