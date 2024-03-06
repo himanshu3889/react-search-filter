@@ -36,7 +36,7 @@ export type IBinPow = {
   }
   
 
-  export type IRollingObjectSearchPositions = {
+  export type IRollingSearchPositions = {
     array: Array<string | { [key: string]: any }>
     searchFields?: string[];
     pattern: string;
@@ -45,7 +45,7 @@ export type IBinPow = {
     hasMatchOnlyWords?: boolean;
   }
 
-  export type IRollingObjectSearch = {
+  export type IRollingSearch = {
     array: Array<string | { [key: string]: any }>
     searchFields?: string[];
     boolArrayResult?: boolean;

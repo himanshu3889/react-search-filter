@@ -1,8 +1,8 @@
 import {searchMatchPositions} from "./searchMatchPositions";
-import {IRollingObjectSearchPositions, IRollingObjectSearch} from "./types";
+import {IRollingSearchPositions, IRollingSearch} from "./types";
 import {searchMatch} from "./searchMatch";
 
-const INFINITY: number = 1000000007;
+const INFINITY: number = 1000000007;  // 10^9 + 7  : a prime number
 
 class RollingSearch {
   async search({
@@ -12,53 +12,38 @@ class RollingSearch {
     boolArrayResult = true,
     hasCaseSensitive = false,
     hasMatchOnlyWords = false,
-  }: IRollingObjectSearch): Promise<{[key: string]: boolean}[] | boolean[]> {
+  }: IRollingSearch): Promise<{[key: string]: boolean}[] | boolean[]> {
     const result: {[key: string]: boolean}[] = [];
     const indicesBoolResult: boolean[] = [];
     for (const object of array) {
       const objectResult: {[key: string]: boolean} = {};
       let objectBoolOrResult = false;
-      if (searchFields != null) {
-        // If searchFields is provided
-        for (const field of searchFields!) {
-          const text: any = (object as {[key: string]: any})[field];
-          if (typeof text !== "string") {
-            continue;
-          }
-          const currResult: boolean = await searchMatch({
-            text: text,
-            pattern: pattern,
-            hasCaseSensitive: hasCaseSensitive,
-            hasMatchOnlyWords: hasMatchOnlyWords,
-          });
-          objectResult[field] = currResult;
-          objectBoolOrResult ||= currResult;
-          if (objectBoolOrResult === true) {
-            break;
-          }
+      const fieldsToSearch = searchFields ? searchFields : Object.keys(object);
+      for (const field of fieldsToSearch) {
+        const text: any = (object as {[key: string]: any})[field];
+        if (typeof text !== "string") {
+          continue;
         }
-      } else {
-        // If searchFields are not provided, search on all fields of each respective object
-        for (const field of Object.keys(object)) {
-          const text: any = (object as {[key: string]: any})[field];
-          if (typeof text !== "string") {
-            continue;
-          }
-          const currResult: boolean = await searchMatch({
-            text: text,
-            pattern: pattern,
-            hasCaseSensitive: hasCaseSensitive,
-            hasMatchOnlyWords: hasMatchOnlyWords,
-          });
+        const currResult: boolean = await searchMatch({
+          text: text,
+          pattern: pattern,
+          hasCaseSensitive: hasCaseSensitive,
+          hasMatchOnlyWords: hasMatchOnlyWords,
+        });
+        if (boolArrayResult === false) {
           objectResult[field] = currResult;
+        } else {
           objectBoolOrResult ||= currResult;
-          if (objectBoolOrResult === true) {
-            break;
-          }
+        }
+        if (objectBoolOrResult === true) {
+          break;
         }
       }
-      result.push(objectResult);
-      indicesBoolResult.push(objectBoolOrResult);
+      if (boolArrayResult === false) {
+        result.push(objectResult);
+      } else {
+        indicesBoolResult.push(objectBoolOrResult);
+      }
     }
     if (boolArrayResult) {
       return indicesBoolResult;
@@ -73,42 +58,24 @@ class RollingSearch {
     hasCaseSensitive = false,
     maxMatchCount = INFINITY,
     hasMatchOnlyWords = false,
-  }: IRollingObjectSearchPositions): Promise<{[key: string]: number[]}[]> {
+  }: IRollingSearchPositions): Promise<{[key: string]: number[]}[]> {
     const result: {[key: string]: number[]}[] = [];
     for (const object of array) {
       const objectResult: {[key: string]: number[]} = {};
-      if (searchFields != null) {
-        // If searchFields is provided
-        for (const field of searchFields!) {
-          const text: any = (object as {[key: string]: any})[field];
-          if (typeof text !== "string") {
-            continue;
-          }
-          const resultIndices: number[] = await searchMatchPositions({
-            text: text,
-            pattern: pattern,
-            hasCaseSensitive: hasCaseSensitive,
-            maxMatchCount: maxMatchCount,
-            hasMatchOnlyWords: hasMatchOnlyWords,
-          });
-          objectResult[field] = resultIndices;
+      const fieldsToSearch = searchFields ? searchFields : Object.keys(object);
+      for (const field of fieldsToSearch) {
+        const text: any = (object as {[key: string]: any})[field];
+        if (typeof text !== "string") {
+          continue;
         }
-      } else {
-        // If searchFields are not provided, search on all fields of each respective object
-        for (const field of Object.keys(object)) {
-          const text: any = (object as {[key: string]: any})[field];
-          if (typeof text !== "string") {
-            continue;
-          }
-          const resultIndices: number[] = await searchMatchPositions({
-            text: text,
-            pattern: pattern,
-            hasCaseSensitive: hasCaseSensitive,
-            maxMatchCount: maxMatchCount,
-            hasMatchOnlyWords: hasMatchOnlyWords,
-          });
-          objectResult[field] = resultIndices;
-        }
+        const resultIndices: number[] = await searchMatchPositions({
+          text: text,
+          pattern: pattern,
+          hasCaseSensitive: hasCaseSensitive,
+          maxMatchCount: maxMatchCount,
+          hasMatchOnlyWords: hasMatchOnlyWords,
+        });
+        objectResult[field] = resultIndices;
       }
       result.push(objectResult);
     }
