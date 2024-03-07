@@ -1,6 +1,6 @@
-import { isUpperCaseAlphabet } from "./alphabetCheck";
-import { binPower } from "./binPower";
-import { INFINITY } from "./searchEngine";
+import {isUpperCaseAlphabet} from "./alphabetCheck";
+import {binPower} from "./binPower";
+import {INFINITY} from "./searchEngine";
 import {
   IAddCharacterToHash,
   IMatchingPositions,
@@ -12,7 +12,7 @@ function characterASCII(ch: string, hasCaseSensitive: boolean = false): number {
   const characterAscii = ch.charCodeAt(0);
   const isUpper = isUpperCaseAlphabet(characterAscii);
   if (isUpper && !hasCaseSensitive) {
-    return characterAscii + 32;
+    return characterAscii + 32;  // lowercase convert to uppercase
   }
   return characterAscii;
 }
@@ -26,7 +26,7 @@ async function addCharacterToHash({
   mod,
 }: IAddCharacterToHash): Promise<number> {
   const charCode = characterASCII(character, hasCaseSensitive);
-  return (hash * base + charCode) % mod;
+  return (((hash * base) % mod) + charCode) % mod;
 }
 
 async function removeCharacterFromHash({
@@ -37,7 +37,7 @@ async function removeCharacterFromHash({
   mod,
 }: IRemoveCharacterFromHash): Promise<number> {
   const charCode = characterASCII(character, hasCaseSensitive);
-  return (mod + hash - ((charCode * basePowerK) % mod)) % mod;
+  return (mod + hash - (charCode * basePowerK) % mod) % mod;
 }
 
 async function searchMatchPositions({
@@ -60,7 +60,7 @@ async function searchMatchPositions({
   });
 
   const mod2: number = 999999929;
-  const base2: number = 37;
+  const base2: number = 29;
   const base2PowerK: number = await binPower({
     base: base2,
     power: patternLen,
@@ -124,7 +124,9 @@ async function searchMatchPositions({
     }
     const currMatchStartIndex = textIndex - patternLen + 1;
     const prevMatchStartIndex =
-      resultIndices.length > 0 ? resultIndices[resultIndices.length - 1] : -INFINITY;
+      resultIndices.length > 0
+        ? resultIndices[resultIndices.length - 1]
+        : -INFINITY;
     let addIndexToResult: boolean =
       currMatchStartIndex - prevMatchStartIndex >= patternLen &&
       textSubstrHash1 === patternHash1 &&

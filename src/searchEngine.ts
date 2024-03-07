@@ -2,7 +2,7 @@ import {searchMatchPositions} from "./searchMatchPositions";
 import {IRollingSearchPositions, IRollingSearch} from "./types";
 import {searchMatch} from "./searchMatch";
 
-const INFINITY: number = 1000000007;  // 10^9 + 7  : a prime number
+const INFINITY: number = 4294967296;  // 1 << 32
 
 class RollingSearch {
   async search({

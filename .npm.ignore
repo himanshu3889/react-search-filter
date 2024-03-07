@@ -7,4 +7,4 @@
 tsconfig.json
 tsup.config.js
 
-/test
+/coverage

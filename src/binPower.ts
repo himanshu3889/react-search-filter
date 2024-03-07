@@ -1,15 +1,20 @@
 import {IBinPow} from "./types";
 
 async function binPower({base, power, mod}: IBinPow): Promise<number> {
-  let result: number = 1;
-  while (power) {
-    if (power % 2) {
-      result = (result * base) % mod;
+  let result: bigint = BigInt(1);
+  let baseBig: bigint = BigInt(base);
+  let powerBig: bigint = BigInt(power);
+  let modBig: bigint = BigInt(mod);
+
+  while (powerBig > 0n) {
+    if (powerBig & 1n) {
+      result = (result * baseBig) % modBig;
     }
-    base = (base * base) % mod;
-    power = Math.floor(power / 2);
+    baseBig = (baseBig * baseBig) % modBig;
+    powerBig >>= 1n;
   }
-  return result;
+
+  return Number(result);
 }
 
 export {binPower};
