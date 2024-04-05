@@ -35,9 +35,9 @@
   "author": "Himanshu Rajput",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/himanshu3889/react-search-filter/issues"
+    "url": "https://github.com/himanshu3889/rolling-search/issues"
   },
-  "homepage": "https://github.com/himanshu3889/react-search-filter#readme",
+  "homepage": "https://github.com/himanshu3889/rolling-search#readme",
   "devDependencies": {
     "@types/node": "^20.11.20",
     "ts-node": "^10.9.2",
