@@ -4,7 +4,10 @@
   "description": "filter the array of string/json objects using Rabin Karp algorithm",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
-  "type": "./dist/index.d.ts",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "test": "jest --watchAll --verbose --coverage"
