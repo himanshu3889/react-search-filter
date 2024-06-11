@@ -8,13 +8,6 @@ describe("searchMatchPositions functionality", () => {
       {text: "worlds Worlds woldS hi worLdS"},
     ];
     const searchEngine = new RollingSearch(array);
-  it("search the pattern no case sensitive indices result", async () => {
-    const array = [
-      {text: "hello world"},
-      {text: "this is another way World_"},
-      {text: "worlds Worlds woldS hi worLdS"},
-    ];
-    const searchEngine = new RollingSearch(array);
     const pattern = "world";
     const result = await searchEngine.search({pattern: pattern});
     expect(result).toEqual([0, 1, 2]);
@@ -37,7 +30,7 @@ describe("searchMatchPositions functionality", () => {
     const pattern = "world";
     const result = await searchEngine.search({
       pattern: pattern,
-      hasMatchOnlyWords: true, // TODO: NEED TO SET IT TO FALSE
+      hasMatchOnlyWords: true,
     });
     expect(result).toEqual([0]);
   });
